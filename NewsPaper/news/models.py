@@ -10,7 +10,7 @@ class Author(models.Model):
     def update_rating(self):
         sum_rating_author = self.post_set.all().aggregate(Sum('rating_post'))['rating_post__sum'] * 3
         sum_rating_comment = self.author_user.comment_set.all().aggregate(Sum('rating_comment'))['rating_comment__sum']
-        sum_rating = self.post_set.all().aggregate(Sum('comment'))['comment__sum']
+        sum_rating = self.post_set.all().aggregate(Sum('comment__rating_comment'))['comment__rating_comment__sum']
         self.rating_author = sum_rating_author + sum_rating_comment + sum_rating
         self.save()
 
