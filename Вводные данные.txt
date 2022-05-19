@@ -77,20 +77,4 @@ best_post = Post.objects.get(pk=3).preview()
 best_post
 
 11.
-Post.objects.filter(pk=3).values('comment')
-
-
-
-
-
-
-
-python manage.py shell
-from django.contrib.auth.models import User
-from news.models import *
-from django.db.models import Sum
-user_1 = User.objects.get(pk=1)
-author_1 = Author.objects.get(author_user=user_1)
-a_1 = author_1.update_rating()
-user_2 = User.objects.get(pk=2)
-author_2 = Author.objects.get(author_user=user_2)
+Post.objects.filter(pk=3).values('comment__text_comment')
