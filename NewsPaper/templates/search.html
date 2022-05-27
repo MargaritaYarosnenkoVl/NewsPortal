@@ -17,9 +17,9 @@
            </tr>
           {% for post in filter.qs %}
            <tr>
-               <td>{{ search.post.header_post|censor }}</td>
-               <td>{{ search.post.post_data|date:'d M Y'}}</td>
-               <td>{{ search.post.text_post|truncatechars:20|censor }}</td>
+               <td>{{ post.header_post|censor }}</td>
+               <td>{{ post.post_data|date:'d M Y'}}</td>
+               <td>{{ post.text_post|truncatechars:20|censor }}</td>
 
            </tr>
            {% endfor %}
