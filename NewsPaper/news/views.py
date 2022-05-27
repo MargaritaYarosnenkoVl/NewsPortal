@@ -8,7 +8,7 @@ class NewsList(ListView):
     ordering = '-id'
     template_name = 'news.html'
     context_object_name = 'news'
-    paginate_by = 1
+    paginate_by = 10
 
 
 class Search(ListView):
