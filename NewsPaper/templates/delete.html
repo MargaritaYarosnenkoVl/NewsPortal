@@ -1,0 +1,29 @@
+{% extends 'flatpages/default.html' %}
+{% load censor %}
+{% block title %} News {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить статью?</h2>
+<table>
+    <thead>
+        <th>
+           Заголовок
+        </th>
+        <th>
+            Дата
+        </th>
+        <th>
+            Превью
+        </th>
+    </thead>
+    <tr>
+        <td>{{ delete.header_post|censor }}</td>
+        <td>{{ delete.post_data|date:'d M Y'}}</td>
+        <td>{{ delete.text_post|truncatechars:20|censor }}</td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

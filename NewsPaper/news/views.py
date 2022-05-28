@@ -1,6 +1,7 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .filters import SearchFilter
+from .forms import PostForm
 
 
 class NewsList(ListView):
@@ -29,3 +30,23 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'news_.html'
     context_object_name = 'news_'
+
+
+class NewsAdd(CreateView):
+    template_name = 'add.html'
+    form_class = PostForm
+
+
+class NewsEdit(UpdateView):
+    template_name = 'add.html'
+    form_class = PostForm
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+class NewsDelete(DeleteView):
+    template_name = 'delete.html'
+    queryset = Post.objects.all()
+    success_url = '/news/'

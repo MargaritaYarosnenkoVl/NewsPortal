@@ -8,6 +8,9 @@ class Author(models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating_author = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.author_user.username
+
     def update_rating(self):
         sum_rating_author = self.post_set.all().aggregate(Sum('rating_post'))['rating_post__sum'] * 3
         sum_rating_comment = self.author_user.comment_set.all().aggregate(Sum('rating_comment'))['rating_comment__sum']
@@ -29,7 +32,7 @@ class Post(models.Model):
         (news, 'Новость'),
     ]
 
-    post_author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    post_author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     news_post = models.CharField(max_length=2, choices=NEWS_POST, default=article)
     post_data = models.DateField(auto_now_add=True)
     header_post = models.CharField(max_length=255)
@@ -50,7 +53,10 @@ class Post(models.Model):
         return self.text_post[:124] + '...'
 
     def __str__(self):
-        return f'{self.header_post, n/self.post_data, self.text_post}'
+        return self.post_author.author_user.username
+
+    def get_absolute_url(self):
+        return f'/news/{self.id}'
 
 
 class PostCategory(models.Model):

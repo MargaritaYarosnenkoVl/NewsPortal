@@ -20,6 +20,10 @@ News
            </tr>
           {% for post in news %}
            <tr>
+               <td>
+            <a href="{% url 'news_' post.id %}">{{ header_post|title }}</a>
+            <a href="{% url 'edit' post.id %}"><u>Редактировать</u></a>
+            <a href="{% url 'delete' post.id %}"><u> Удалить </u></a>
                <td>{{ post.header_post|censor }}</td>
                <td>{{ post.post_data|date:'d M Y'}}</td>
                <td>{{ post.text_post|truncatechars:20|censor }}</td>
@@ -30,6 +34,7 @@ News
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
+<a href="{% url 'add' %}">Добавить новую статью</a> <br>
 
 {% if is_paginated %}
     {% if page_obj.has_previous %}
