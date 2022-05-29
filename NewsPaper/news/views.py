@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Category
 from .filters import SearchFilter
 from .forms import PostForm
 
@@ -23,6 +23,7 @@ class Search(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = SearchFilter(self.request.GET,
                                          queryset=self.get_queryset())
+        context['categories'] = Category.objects.all()
         return context
 
 

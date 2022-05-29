@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 
 
-
 class Author(models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating_author = models.IntegerField(default=0)
@@ -21,6 +20,9 @@ class Author(models.Model):
 
 class Category(models.Model):
     name_category = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name_category
 
 
 class Post(models.Model):
@@ -51,9 +53,6 @@ class Post(models.Model):
 
     def preview(self):
         return self.text_post[:124] + '...'
-
-    def __str__(self):
-        return self.post_author.author_user.username
 
     def get_absolute_url(self):
         return f'/news/{self.id}'

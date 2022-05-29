@@ -1,16 +1,13 @@
 {% extends 'flatpages/default.html' %}
-
 {% load censor %}
 
 {% block title %}
 News
 {% endblock title %}
 
-
 {% block content %}
 <h1>Все новости: {{ news|length }}</h1>
 <hr>
-
 {% if news %}
       <table>
            <tr>
@@ -27,13 +24,13 @@ News
                <td>{{ post.header_post|censor }}</td>
                <td>{{ post.post_data|date:'d M Y'}}</td>
                <td>{{ post.text_post|truncatechars:20|censor }}</td>
-
            </tr>
            {% endfor %}
        </table>
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
+
 <a href="{% url 'add' %}">Добавить новую статью</a> <br>
 
 {% if is_paginated %}
