@@ -23,7 +23,6 @@ class Search(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = SearchFilter(self.request.GET,
                                          queryset=self.get_queryset())
-        context['categories'] = Category.objects.all()
         return context
 
 
@@ -51,3 +50,4 @@ class NewsDelete(DeleteView):
     template_name = 'delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
