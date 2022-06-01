@@ -1,6 +1,8 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django import forms
 
 
 class Author(models.Model):
@@ -77,4 +79,5 @@ class Comment(models.Model):
     def dislike(self):
         self.rating_comment -= 1
         self.save()
+
 

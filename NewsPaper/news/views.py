@@ -1,7 +1,11 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Category
+from .models import Post
 from .filters import SearchFilter
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
 
 
 class NewsList(ListView):
@@ -37,7 +41,7 @@ class NewsAdd(CreateView):
     form_class = PostForm
 
 
-class NewsEdit(UpdateView):
+class NewsUpgrade(LoginRequiredMixin, UpdateView):
     template_name = 'add.html'
     form_class = PostForm
 
@@ -50,4 +54,5 @@ class NewsDelete(DeleteView):
     template_name = 'delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
 
