@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, BaseRegisterForm
+from .models import Post
 from .filters import SearchFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -55,7 +55,3 @@ class NewsDelete(DeleteView):
     success_url = '/news/'
 
 
-class BaseRegisterView(CreateView):
-    model = User
-    form_class = BaseRegisterForm
-    success_url = '/'
