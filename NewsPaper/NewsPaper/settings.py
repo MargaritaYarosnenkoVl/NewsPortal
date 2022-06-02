@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qh#!99=*yoxcl$#l-#2b48mlaqma*lzne6&y6ib!vg81&oig4t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -40,10 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'news',
     'django_filters',
-
-    'django.contrib.auth',
-    'django.contrib.messages',
-    'django.contrib.sites',
 
     'allauth',
     'allauth.account',
@@ -71,7 +67,7 @@ ROOT_URLCONF = 'NewsPaper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
