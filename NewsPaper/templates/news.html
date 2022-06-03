@@ -1,5 +1,9 @@
 {% extends 'flatpages/default.html' %}
 {% load censor %}
+{% url 'logout' %}
+{% url 'account_upgrade' %}
+
+
 
 {% block title %}
 News
@@ -8,6 +12,12 @@ News
 {% block content %}
 <h1>Все новости: {{ news|length }}</h1>
 <hr>
+
+{% if is_not_authors %}
+<button> <a href="news/upgrade/"> Стать автором </a> </button>
+<hr>
+{% endif %}
+
 {% if news %}
       <table>
            <tr>
@@ -53,4 +63,9 @@ News
     {% endif %}
 
 {% endif %}
+
+
+
+<button> <a href="logout">Выйти</a> </button>
+
 {% endblock content %}

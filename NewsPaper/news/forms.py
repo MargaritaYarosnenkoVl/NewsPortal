@@ -1,6 +1,8 @@
 from django.forms import ModelForm, HiddenInput, CharField, Textarea
 from django.utils.translation import gettext_lazy as _
 from .models import Post, Category
+from allauth.account.forms import SignupForm
+from django.contrib.auth.models import Group
 
 
 class PostForm(ModelForm):
@@ -16,3 +18,12 @@ class PostForm(ModelForm):
             'post_category': _('Категория'),
             'post_author': _('Автор'),
         }
+
+
+class CommonSignupForm(SignupForm):
+
+    def save(self, request):
+        user = super(CommonSignupForm, self).save(request)
+        common_group = Group.objects.get(name='common')
+        common_group.user_set.add(user)
+        return user

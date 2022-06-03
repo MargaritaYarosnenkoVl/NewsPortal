@@ -3,8 +3,10 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post
 from .filters import SearchFilter
 from .forms import PostForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import redirect
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 
 class NewsList(ListView):
@@ -13,6 +15,11 @@ class NewsList(ListView):
     template_name = 'news.html'
     context_object_name = 'news'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
 
 
 class Search(ListView):
@@ -35,18 +42,10 @@ class NewsDetail(DetailView):
     context_object_name = 'news_'
 
 
-class NewsAdd(CreateView):
+class NewsAdd(PermissionRequiredMixin, CreateView):
     template_name = 'add.html'
     form_class = PostForm
-
-
-class NewsUpgrade(LoginRequiredMixin, UpdateView):
-    template_name = 'add.html'
-    form_class = PostForm
-
-    def get_object(self, **kwargs):
-        id = self.kwargs.get('pk')
-        return Post.objects.get(pk=id)
+    permission_required = ('news.add_post')
 
 
 class NewsDelete(DeleteView):
@@ -54,4 +53,22 @@ class NewsDelete(DeleteView):
     queryset = Post.objects.all()
     success_url = '/news/'
 
+
+class NewsUpgrade(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    template_name = 'add.html'
+    form_class = PostForm
+    permission_required = ('news.change_post')
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+@login_required
+def upgrade_me(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
+        authors_group.user_set.add(user)
+    return redirect('/')
 
