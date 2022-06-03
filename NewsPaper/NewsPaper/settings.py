@@ -145,7 +145,7 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_URL = 'news/'
 
-ACCOUNT_FORMS = {'news': 'news.forms.CommonSignupForm'}
+ACCOUNT_FORMS = {'signup': 'news.forms.CommonSignupForm'}
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
