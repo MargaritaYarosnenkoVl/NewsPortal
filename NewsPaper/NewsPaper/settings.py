@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'news',
     'django_filters',
+    'protect',
 
     'allauth',
     'allauth.account',
@@ -143,7 +144,7 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_URL = 'news/'
+LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_FORMS = {'signup': 'news.forms.CommonSignupForm'}
 

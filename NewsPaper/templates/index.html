@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+{% url 'logout' %}
+{% url 'upgrade' %}
+
+{% block content %}
+{% if is_not_authors %}
+<button> <a href="news/upgrade"> Стать автором </a> </button>
+{% endif %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+
+
+
+<button> <a href="news/logout">Выйти</a> </button>
+{% endblock %}

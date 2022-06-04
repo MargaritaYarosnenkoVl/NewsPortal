@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from .models import Post, Author
 from .filters import SearchFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -16,10 +16,7 @@ class NewsList(ListView):
     context_object_name = 'news'
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
-        return context
+
 
 
 class Search(ListView):
@@ -43,9 +40,16 @@ class NewsDetail(DetailView):
 
 
 class NewsAdd(PermissionRequiredMixin, CreateView):
+    model = Post
     template_name = 'add.html'
     form_class = PostForm
     permission_required = ('news.add_post')
+
+    def get_initial(self):
+        initial = super().get_initial()
+
+        initial['post_author'] = self.request.user
+        return initial
 
 
 class NewsDelete(DeleteView):
