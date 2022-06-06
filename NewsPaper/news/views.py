@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Post, Author
 from .filters import SearchFilter
@@ -15,8 +14,6 @@ class NewsList(ListView):
     template_name = 'news.html'
     context_object_name = 'news'
     paginate_by = 10
-
-
 
 
 class Search(ListView):
@@ -45,11 +42,12 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     permission_required = ('news.add_post')
 
-    def get_initial(self):
-        initial = super().get_initial()
-
-        initial['post_author'] = self.request.user
-        return initial
+    def form_valid(self, form):
+        user = self.request.user
+        self.object = form.save(commit=False)
+        self.object.post_author = Author.objects.get(author_user=user)
+        self.object.save()
+        return super().form_valid(form)
 
 
 class NewsDelete(DeleteView):
@@ -74,5 +72,6 @@ def upgrade_me(request):
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
+        Author.objects.create(author_user=user)
     return redirect('/')
 
