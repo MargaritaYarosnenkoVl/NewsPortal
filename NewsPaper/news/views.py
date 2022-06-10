@@ -52,7 +52,7 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        post_mail = Post(post_author_id=request.POST('post_author'),
+        post_mail = Post(post_author=request.POST('post_author'),
                          news_post=request.POST('news_post'),
                          header_post=request.POST('header_post'),
                          text_post=request.POST('text_post'),
@@ -67,7 +67,7 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
         )
 
         msg = EmailMultiAlternatives(
-            subject=f'"Здравствуйте, {post_mail.post_author.user} Новая статья в твоём любимом разделе!"',
+            subject=f'"Здравствуйте, {post_mail.post_author} Новая статья в твоём любимом разделе!"',
             body=post_mail.text_post[:50] + "...",
             from_email='YaMargoshka@yandex.ru',
             to=['YaMargoshka@yandex.ru'])
