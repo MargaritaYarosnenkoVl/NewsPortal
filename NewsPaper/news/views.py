@@ -1,11 +1,13 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Post, Author
+from .models import Post, Author, Category
 from .filters import SearchFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 
 class NewsList(ListView):
@@ -49,6 +51,33 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
         self.object.save()
         return super().form_valid(form)
 
+    def post(self, request, *args, **kwargs):
+        post_mail = Post(post_author_id=request.POST('post_author'),
+                         news_post=request.POST('news_post'),
+                         header_post=request.POST('header_post'),
+                         text_post=request.POST('text_post'),
+                         post_category=request.POST('post_category'))
+        post_mail.save()
+
+        html_content = render_to_string(
+            'mail_created.html',
+            {
+                'post_mail': post_mail,
+            }
+        )
+
+        msg = EmailMultiAlternatives(
+            subject=f'"Здравствуйте, {post_mail.post_author.user} Новая статья в твоём любимом разделе!"',
+            body=post_mail.text_post[:50] + "...",
+            from_email='YaMargoshka@yandex.ru',
+            to=['YaMargoshka@yandex.ru'])
+
+        msg.attach_alternative(html_content, "text/html")
+
+        msg.send()
+
+        return redirect('post_mail:post_mail')
+
 
 class NewsDelete(DeleteView):
     template_name = 'delete.html'
@@ -75,3 +104,7 @@ def upgrade_me(request):
         Author.objects.create(author_user=user)
     return redirect('/')
 
+
+@login_required
+def subscribe(request,  *args, **kwargs):
+    pass

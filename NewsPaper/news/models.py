@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 
 
-
 class Author(models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating_author = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.author_user.username
@@ -21,6 +21,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name_category = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, through='UserCategory')
 
     def __str__(self):
         return self.name_category
@@ -62,6 +63,11 @@ class Post(models.Model):
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+
+class UserCategory(models.Model):
+    user_category = models.ForeignKey(User, on_delete=models.CASCADE)
+    category_user = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
