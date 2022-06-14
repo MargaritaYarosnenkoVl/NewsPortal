@@ -63,7 +63,7 @@ class NewsDetail(DetailView):
 
         msg.send()
 
-        return redirect('post_get')
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class NewsAdd(PermissionRequiredMixin, CreateView):
