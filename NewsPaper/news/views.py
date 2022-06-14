@@ -37,6 +37,7 @@ class NewsDetail(DetailView):
     template_name = 'news_.html'
     context_object_name = 'news_'
 
+
     def post(self, request, *args, **kwargs):
         post_mail = Post(post_author=request.POST.get('post_author'),
                          news_post=request.POST.get('news_post'),
@@ -56,7 +57,7 @@ class NewsDetail(DetailView):
             subject=f'"Здравствуйте, {post_mail.post_author} Новая статья в твоём любимом разделе!"',
             body=post_mail.text_post[:50] + "...",
             from_email='YaMargoshka@yandex.ru',
-            to=['YaMargoshka@yandex.ru'])
+            to=['YaMargoshka@yandex.ru', '_lampochka@mail.ru'])
 
         msg.attach_alternative(html_content, "text/html")
 
@@ -120,6 +121,6 @@ def unsubscribe(request, **kwargs):
     category = Category.objects.get(pk=kwargs['pk'])
     user = request.user
     if user in category.subscribers.all():
-        category.subscribers.add(user)
+        category.subscribers.remove(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
