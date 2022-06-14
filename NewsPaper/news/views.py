@@ -3,7 +3,7 @@ from .models import Post, Author, Category
 from .filters import SearchFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -37,32 +37,18 @@ class NewsDetail(DetailView):
     template_name = 'news_.html'
     context_object_name = 'news_'
 
-
-class NewsAdd(PermissionRequiredMixin, CreateView):
-    model = Post
-    template_name = 'add.html'
-    form_class = PostForm
-    permission_required = ('news.add_post')
-
-    def form_valid(self, form):
-        user = self.request.user
-        self.object = form.save(commit=False)
-        self.object.post_author = Author.objects.get(author_user=user)
-        self.object.save()
-        return super().form_valid(form)
-
     def post(self, request, *args, **kwargs):
-        post_mail = Post(post_author=request.POST('post_author'),
-                         news_post=request.POST('news_post'),
-                         header_post=request.POST('header_post'),
-                         text_post=request.POST('text_post'),
-                         post_category=request.POST('post_category'))
+        post_mail = Post(post_author=request.POST.get('post_author'),
+                         news_post=request.POST.get('news_post'),
+                         header_post=request.POST.get('header_post'),
+                         text_post=request.POST.get('text_post'),
+                         post_category=request.POST.get('post_category'))
         post_mail.save()
 
         html_content = render_to_string(
             'mail_created.html',
             {
-                'post_mail': post_mail,
+                'news_': post_mail,
             }
         )
 
@@ -76,7 +62,21 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
 
         msg.send()
 
-        return redirect('post_mail:post_mail')
+        return redirect('post_get')
+
+
+class NewsAdd(PermissionRequiredMixin, CreateView):
+    model = Post
+    template_name = 'add.html'
+    form_class = PostForm
+    permission_required = ('news.add_post')
+
+    def form_valid(self, form):
+        user = self.request.user
+        self.object = form.save(commit=False)
+        self.object.post_author = Author.objects.get(author_user=user)
+        self.object.save()
+        return super().form_valid(form)
 
 
 class NewsDelete(DeleteView):
@@ -106,5 +106,20 @@ def upgrade_me(request):
 
 
 @login_required
-def subscribe(request,  *args, **kwargs):
-    pass
+def subscribe(request, **kwargs):
+    category = Category.objects.get(pk=kwargs['pk'])
+    user = request.user
+    if user not in category.subscribers.all():
+        category.subscribers.add(user)
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def unsubscribe(request, **kwargs):
+    category = Category.objects.get(pk=kwargs['pk'])
+    user = request.user
+    if user in category.subscribers.all():
+        category.subscribers.add(user)
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))

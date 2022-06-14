@@ -2,6 +2,8 @@
 {% extends 'flatpages/default.html' %}
 
 {% load censor %}
+{% url 'subscribe' %}
+{% url 'unsubscribe' %}
 
 {% block title %}
 News
@@ -13,8 +15,25 @@ News
     <h1>{{ news_.header_post|censor }}</h1>
 <hr>
     <h3>{{ news_.text_post|censor }}</h3>
-<hr>
-    {{ news_.post_data|date:'d M Y'}}
 
-<button> <a href="news/upgrade"> Подписаться </a> </button>
+    {{ news_.post_data|date:'d M Y'}}
+<hr>
+
+{% csrf_token %}
+
+{% if request.user.is_authenticated %}
+
+       {%for category in news_.post_category.all%}
+
+            {% if not user in category.subscribe.all %}
+                Подписаться на новости:
+               <p><button><a href="{% url 'subscribe' category.id %}"> Подписаться</a></button></p>
+            {% else %}
+                Отписаться от новостей:
+                <button><a href="{% url 'unsubscribe' category.id %}">Отписаться</a></button>
+            {%endif%}
+        {% endfor %}
+
+{% endif %}
+
 {% endblock content %}

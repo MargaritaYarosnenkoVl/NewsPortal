@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewsList, NewsDetail, Search, NewsUpgrade, NewsDelete, NewsAdd, upgrade_me, subscribe
+from .views import NewsList, NewsDetail, Search, NewsUpgrade, NewsDelete, NewsAdd, upgrade_me, subscribe, unsubscribe
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('upgrade/', upgrade_me, name='upgrade'),
-    path('subscribers/<int:pk>', subscribe, name='subscribe'),
+    path('subscribe/<int:pk>', subscribe, name='subscribe'),
+    path('unsubscribe/<int:pk>', unsubscribe, name='unsubscribe'),
 ]
