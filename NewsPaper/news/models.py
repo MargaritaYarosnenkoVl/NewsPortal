@@ -24,7 +24,7 @@ class Category(models.Model):
     subscribers = models.ManyToManyField(User, through='UserCategory', null=True)
 
     def __str__(self):
-        return f'{self.name_category}: {self.subscribers}'
+        return self.name_category
 
 
 class Post(models.Model):

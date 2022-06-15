@@ -22,10 +22,7 @@
                <td>{{ post.post_data|date:'d M Y'}}</td>
                <td>{{ post.text_post|truncatechars:20|censor }}</td>
 
-               <td><form method="post" action="{% url 'news_' %}">
-                   {% csrf_token %}
-                   <input type="submit"  value="Перейти">
-                   </form><td>
+
            </tr>
            {% endfor %}
        </table>
