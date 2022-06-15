@@ -37,7 +37,6 @@ class NewsDetail(DetailView):
     template_name = 'news_.html'
     context_object_name = 'news_'
 
-
     def post(self, request, *args, **kwargs):
         post_mail = Post(post_author=request.POST.get('post_author'),
                          news_post=request.POST.get('news_post'),
@@ -63,7 +62,7 @@ class NewsDetail(DetailView):
 
         msg.send()
 
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect('news/')
 
 
 class NewsAdd(PermissionRequiredMixin, CreateView):
