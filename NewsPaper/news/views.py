@@ -37,6 +37,16 @@ class NewsDetail(DetailView):
     template_name = 'news_.html'
     context_object_name = 'news_'
 
+    def get_context_data(self,
+                         **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user not in Category.subscribers.all():
+            context['subscribers'] = True
+        else:
+            context['subscribers'] = False
+        return context
+
     def post(self, request, *args, **kwargs):
         post_mail = Post(post_author=request.POST.get('post_author'),
                          news_post=request.POST.get('news_post'),
