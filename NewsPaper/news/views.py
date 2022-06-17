@@ -8,6 +8,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.core.mail import mail_managers
 
 
 class NewsList(ListView):
@@ -40,11 +41,14 @@ class NewsDetail(DetailView):
     def get_context_data(self,
                          **kwargs):
         context = super().get_context_data(**kwargs)
+        categories = self.object.post_category.all()
+        is_subscriber = False
+        for cat in categories:
+            if self.request.user in cat.subscribers.all():
+                is_subscriber = True
+                break
 
-        if self.request.user not in Category.subscribers.all():
-            context['subscribers'] = True
-        else:
-            context['subscribers'] = False
+        context['subscribers'] = is_subscriber
         return context
 
     def post(self, request, *args, **kwargs):
@@ -55,22 +59,9 @@ class NewsDetail(DetailView):
                          post_category=request.POST.get('post_category'))
         post_mail.save()
 
-        html_content = render_to_string(
-            'mail_created.html',
-            {
-                'news_': post_mail,
-            }
+        mail_managers(
+            subject=(f'{Post.post_author}, Привет')
         )
-
-        msg = EmailMultiAlternatives(
-            subject=f'"Здравствуйте, {post_mail.post_author} Новая статья в твоём любимом разделе!"',
-            body=post_mail.text_post[:50] + "...",
-            from_email='YaMargoshka@yandex.ru',
-            to=['YaMargoshka@yandex.ru', '_lampochka@mail.ru'])
-
-        msg.attach_alternative(html_content, "text/html")
-
-        msg.send()
 
         return redirect('news/')
 
@@ -133,3 +124,5 @@ def unsubscribe(request, **kwargs):
         category.subscribers.remove(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+

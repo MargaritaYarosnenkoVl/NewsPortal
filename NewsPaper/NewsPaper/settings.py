@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'news',
+    'news.apps.NewsConfig',
     'django_filters',
     'protect',
     'allauth',
@@ -165,3 +165,10 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
+
+ADMINS = [
+    ('_lampochka@mail.ru', 'YaMargoshka@yandex.ru'),
+]
+SERVER_EMAIL = 'YaMargoshka@yandex.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
+
