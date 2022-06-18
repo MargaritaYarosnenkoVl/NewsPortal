@@ -25,12 +25,13 @@ News
 
         {%for category in news_.post_category.all%}
 
-            {% if request.user.is_category.subscribers %}
-                Отписаться от новостей категории {{ category.name_category }}:
-                <button><a href="{% url 'unsubscribe' category.id %}">Отписаться</a></button>
+            {% if request.user.is_subscriber %}
+
+                 <p>Отписаться от новостей категории {{ category.name_category }}:
+                <button><a href="{% url 'unsubscribe' category.id %}">Отписаться</a></button></p>
             {% else %}
-                Подписаться на новости категории {{ category.name_category }}:
-               <p><button><a href="{% url 'subscribe' category.id %}">Подписаться</a></button></p>
+                 <p>Подписаться на новости категории {{ category.name_category }}:
+               <button><a href="{% url 'subscribe' category.id %}">Подписаться</a></button></p>
             {%endif%}
         {% endfor %}
 
