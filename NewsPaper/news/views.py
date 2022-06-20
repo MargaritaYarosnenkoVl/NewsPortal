@@ -42,8 +42,8 @@ class NewsDetail(DetailView):
                          **kwargs):
         context = super().get_context_data(**kwargs)
         categories = self.object.post_category.all()
-        #is_subscriber = False
-        is_subscriber = {categories.get(id): False}
+        is_subscriber = False
+        #is_subscriber = {categories.get(id): False}
 
         for cat in categories:
             if self.request.user in cat.subscribers.all():
