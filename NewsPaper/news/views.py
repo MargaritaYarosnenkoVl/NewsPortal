@@ -110,20 +110,22 @@ def upgrade_me(request):
 
 @login_required
 def subscribe(request, **kwargs):
-    category = Category.objects.get(pk=kwargs['pk'])
+    post = Post.objects.get(pk=kwargs['pk'])
     user = request.user
-    if user not in category.subscribers.all():
-        category.subscribers.add(user)
+    for category in post.post_category.all():
+        if user not in category.subscribers.all():
+            category.subscribers.add(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
 def unsubscribe(request, **kwargs):
-    category = Category.objects.get(pk=kwargs['pk'])
+    post = Post.objects.get(pk=kwargs['pk'])
     user = request.user
-    if user in category.subscribers.all():
-        category.subscribers.remove(user)
+    for category in post.post_category.all():
+        if user in category.subscribers.all():
+            category.subscribers.remove(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 

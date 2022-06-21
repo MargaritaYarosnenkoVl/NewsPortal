@@ -2,8 +2,6 @@
 {% extends 'flatpages/default.html' %}
 
 {% load censor %}
-{% url 'subscribe' %}
-{% url 'unsubscribe' %}
 
 {% block title %}
 News
@@ -23,17 +21,17 @@ News
 
 {% if request.user.is_authenticated %}
 {% csrf_token %}
+        {%for category in news_.post_category.all%}
 
-
-            {% if request.user.is_subscriber %}
+            {% if request.user in category.subscribers.all %}
 
                  <p>Отписаться от новостей категории {{ category.name_category }}:
-                <button><a href="{% url 'unsubscribe' news_.id %}">Отписаться</a></button></p>
+                <button><a href="{% url 'unsubscribe' category.id %}">Отписаться</a></button></p>
             {% else %}
                  <p>Подписаться на новости категории {{ category.name_category }}:
-               <button><a href="{% url 'subscribe' news_.id %}">Подписаться</a></button></p>
+               <button><a href="{% url 'subscribe' category.id %}">Подписаться</a></button></p>
             {%endif%}
-
+        {% endfor %}
 
 {% endif %}
 
