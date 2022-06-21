@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.core.mail import mail_managers
+from django.core.mail import mail_admins
 
 
 class NewsList(ListView):
@@ -61,7 +61,7 @@ class NewsDetail(DetailView):
                          post_category=request.POST.get('post_category'))
         post_mail.save()
 
-        mail_managers(
+        mail_admins(
             subject=(f'{Post.post_author}, Привет')
         )
 
@@ -125,7 +125,7 @@ def unsubscribe(request, **kwargs):
     user = request.user
     for category in post.post_category.all():
         if user in category.subscribers.all():
-            category.subscribers.remove(user)
+            category.subscribers.add(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
