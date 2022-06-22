@@ -22,13 +22,11 @@ News
 {% if request.user.is_authenticated %}
 {% csrf_token %}
 
-
-            {% if request.user.is_subscriber %}
-
-                 <p>Отписаться от новостей категории {{ category.name_category }}:
+            {% if subscribers %}
+                 <p>Отписаться от новостей:
                 <button><a href="{% url 'unsubscribe' news_.id %}">Отписаться</a></button></p>
             {% else %}
-                 <p>Подписаться на новости категории {{ category.name_category }}:
+                 <p>Подписаться на новости:
                <button><a href="{% url 'subscribe' news_.id %}">Подписаться</a></button></p>
             {%endif%}
 

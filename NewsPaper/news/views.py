@@ -61,11 +61,25 @@ class NewsDetail(DetailView):
                          post_category=request.POST.get('post_category'))
         post_mail.save()
 
-        mail_admins(
-            subject=(f'{Post.post_author}, Привет')
+        html_content = render_to_string(
+            'mail_created.html',
+            {
+                'post_mail': post_mail,
+            }
         )
 
-        return redirect('news/')
+        # в конструкторе уже знакомые нам параметры, да? Называются правда немного по-другому, но суть та же.
+        msg = EmailMultiAlternatives(
+            subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" {post_mail.header_post}',
+            body=post_mail.text_post[:50] + '...',
+            from_email='YaMargoshka@yandex.ru',
+            to=['YaMargoshka@yandex.ru'],
+        )
+        msg.attach_alternative(html_content, "text/html")
+
+        msg.send()
+
+        return redirect('news_')
 
 
 class NewsAdd(PermissionRequiredMixin, CreateView):
@@ -125,7 +139,7 @@ def unsubscribe(request, **kwargs):
     user = request.user
     for category in post.post_category.all():
         if user in category.subscribers.all():
-            category.subscribers.add(user)
+            category.subscribers.remove(user)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
