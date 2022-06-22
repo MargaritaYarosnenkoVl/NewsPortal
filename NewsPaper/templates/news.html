@@ -20,12 +20,11 @@ News
           {% for post in news %}
            <tr>
                <td>
-            <a href="{% url 'news_' post.id %}">{{ header_post|title }}</a>
-            <a href="{% url 'edit' post.id %}"><u>Редактировать</u></a>
-            <a href="{% url 'delete' post.id %}"><u> Удалить </u></a>
-               <td>{{ post.header_post|censor }}</td>
+            <a href = "{% url 'news_' post.id %}">{{ post.header_post|censor }}</a></td>
                <td>{{ post.post_data|date:'d M Y'}}</td>
                <td>{{ post.text_post|truncatechars:20|censor }}</td>
+               <td><a href="{% url 'edit' post.id %}"><u>Редактировать</u></a>
+            <a href="{% url 'delete' post.id %}"><u> Удалить </u></a> </td>
            </tr>
            {% endfor %}
        </table>
@@ -55,9 +54,6 @@ News
     {% endif %}
 
 {% endif %}
-
-
-
 
 
 {% endblock content %}

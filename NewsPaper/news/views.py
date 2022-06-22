@@ -24,6 +24,7 @@ class Search(ListView):
     ordering = '-id'
     template_name = 'search.html'
     context_object_name = 'search'
+    paginate_by = 10
 
     def get_context_data(self,
                          **kwargs):
@@ -53,8 +54,15 @@ class NewsDetail(DetailView):
         context['subscribers'] = is_subscriber
         return context
 
+
+class NewsAdd(PermissionRequiredMixin, CreateView):
+    model = Post
+    template_name = 'add.html'
+    form_class = PostForm
+    permission_required = ('news.add_post')
+
     def post(self, request, *args, **kwargs):
-        post_mail = Post(post_author=request.POST.get('post_author'),
+        post_mail = Post(post_author_id=request.POST.get('post_author'),
                          news_post=request.POST.get('news_post'),
                          header_post=request.POST.get('header_post'),
                          text_post=request.POST.get('text_post'),
@@ -68,9 +76,9 @@ class NewsDetail(DetailView):
             }
         )
 
-        # в конструкторе уже знакомые нам параметры, да? Называются правда немного по-другому, но суть та же.
         msg = EmailMultiAlternatives(
-            subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" {post_mail.header_post}',
+            subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" '
+                    f'{post_mail.header_post}',
             body=post_mail.text_post[:50] + '...',
             from_email='YaMargoshka@yandex.ru',
             to=['YaMargoshka@yandex.ru'],
@@ -80,13 +88,6 @@ class NewsDetail(DetailView):
         msg.send()
 
         return redirect('news_')
-
-
-class NewsAdd(PermissionRequiredMixin, CreateView):
-    model = Post
-    template_name = 'add.html'
-    form_class = PostForm
-    permission_required = ('news.add_post')
 
     def form_valid(self, form):
         user = self.request.user
