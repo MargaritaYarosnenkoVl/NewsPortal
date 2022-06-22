@@ -23,7 +23,7 @@ News
 {% csrf_token %}
 
 
-            {% if request.user in is_subscriber %}
+            {% if request.user.is_subscriber %}
 
                  <p>Отписаться от новостей категории {{ category.name_category }}:
                 <button><a href="{% url 'unsubscribe' news_.id %}">Отписаться</a></button></p>
