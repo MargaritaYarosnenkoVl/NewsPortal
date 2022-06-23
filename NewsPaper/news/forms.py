@@ -12,7 +12,7 @@ class PostForm(ModelForm):
 
     class Meta:
         model = Post
-        fields = ['header_post', 'news_post', 'post_category', 'text_post']
+        fields = ['header_post', 'news_post', 'post_category', 'text_post', 'post_author']
         widgets = {
             'post_author': forms.HiddenInput(),
         }

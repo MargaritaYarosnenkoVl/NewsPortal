@@ -62,12 +62,14 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post')
 
     def post(self, request, *args, **kwargs):
-        post_mail = Post(post_author_id=request.POST.get('post_author'),
+        post_mail = Post(post_author=Author.objects.get(author_user=self.request.user),
                          news_post=request.POST.get('news_post'),
                          header_post=request.POST.get('header_post'),
-                         text_post=request.POST.get('text_post'),
-                         post_category=request.POST.get('post_category'))
+                         text_post=request.POST.get('text_post'))
+
         post_mail.save()
+
+        post_mail.post_category.add(request.POST.get('post_category'))
 
         html_content = render_to_string(
             'mail_created.html',
@@ -80,8 +82,8 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
             subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" '
                     f'{post_mail.header_post}',
             body=post_mail.text_post[:50] + '...',
-            from_email='YaMargoshka@yandex.ru',
-            to=['YaMargoshka@yandex.ru'],
+            from_email='margaritayaroschenko@yandex.ru',
+            to=['margaritayaroschenko@yandex.ru'],
         )
         msg.attach_alternative(html_content, "text/html")
 
