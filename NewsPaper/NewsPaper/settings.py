@@ -167,8 +167,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
 
 ADMINS = [
-    ('Margarita', 'margaritayaroschenko@yandex.ru'),
+    ('Margarita', 'YaMargoshka@yandex.ru'),
 ]
-SERVER_EMAIL = 'margaritayaroschenko@yandex.ru'
+SERVER_EMAIL = 'YaMargoshka@yandex.ru'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
 

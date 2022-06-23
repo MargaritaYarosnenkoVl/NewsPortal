@@ -82,8 +82,8 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
             subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" '
                     f'{post_mail.header_post}',
             body=post_mail.text_post[:50] + '...',
-            from_email='margaritayaroschenko@yandex.ru',
-            to=['margaritayaroschenko@yandex.ru'],
+            from_email='YaMargoshka@yandex.ru',
+            to=['YaMargoshka@yandex.ru'],
         )
         msg.attach_alternative(html_content, "text/html")
 
