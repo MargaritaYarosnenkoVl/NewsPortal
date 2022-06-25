@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.core.mail import mail_admins
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class NewsList(ListView):
@@ -71,25 +73,8 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
 
         post_mail.post_category.add(request.POST.get('post_category'))
 
-        html_content = render_to_string(
-            'mail_created.html',
-            {
-                'post_mail': post_mail,
-            }
-        )
 
-        msg = EmailMultiAlternatives(
-            subject=f'"Здравствуй, {post_mail.post_author}. Новая статья в твоём любимом разделе!" '
-                    f'{post_mail.header_post}',
-            body=post_mail.text_post[:50] + '...',
-            from_email='YaMargoshka@yandex.ru',
-            to=['YaMargoshka@yandex.ru'],
-        )
-        msg.attach_alternative(html_content, "text/html")
-
-        msg.send()
-
-        return redirect('news_')
+        return redirect('/')
 
     def form_valid(self, form):
         user = self.request.user

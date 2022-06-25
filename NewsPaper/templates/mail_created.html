@@ -6,8 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>{{ post.post_author }} Вы успешно подписались!</h2>
-    <p><b>{{ post.header_post}}</b></p>
-    <p>{{ post.text_post|truncatechars:50 }}</p>
+    <p>{{ post_mail.text_post|truncatechars:50 }}</p>
 </body>
 </html>

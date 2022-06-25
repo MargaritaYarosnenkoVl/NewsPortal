@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'django_filters',
     'protect',
+    'django_apscheduler',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -54,7 +55,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,9 +147,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
+SITE_ID = 1
+
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'news/'
+LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_FORMS = {'signup': 'news.forms.CommonSignupForm'}
 
@@ -157,18 +159,21 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.inbox.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = 'yamargoshka'
+EMAIL_HOST_PASSWORD = 'O2KTVWMKocGPNCo9nc55'
 EMAIL_USE_SSL = True
 
 ADMINS = [
-    ('Margarita', 'YaMargoshka@yandex.ru'),
+    ('Margarita', 'yamargoshka@inbox.ru'),
 ]
-SERVER_EMAIL = 'YaMargoshka@yandex.ru'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
+SERVER_EMAIL = 'yamargoshka@inbox.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@inbox.ru"
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
