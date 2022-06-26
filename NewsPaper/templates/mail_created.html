@@ -7,5 +7,6 @@
 </head>
 <body>
     <p>{{ post_mail.text_post|truncatechars:50 }}</p>
+    <p>Перейти на <a href="http://127.0.0.1:8000/news/{{ post_mail.id }}">новость</a> </p>
 </body>
 </html>

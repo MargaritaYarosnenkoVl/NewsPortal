@@ -167,6 +167,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'yamargoshka'
 EMAIL_HOST_PASSWORD = 'O2KTVWMKocGPNCo9nc55'
 EMAIL_USE_SSL = True
+EMAIL_FROM = 'yamargoshka@inbox.ru'
 
 ADMINS = [
     ('Margarita', 'yamargoshka@inbox.ru'),
