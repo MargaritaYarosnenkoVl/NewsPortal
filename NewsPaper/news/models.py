@@ -38,7 +38,7 @@ class Post(models.Model):
 
     post_author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
     news_post = models.CharField(max_length=2, choices=NEWS_POST, default=article)
-    post_data = models.DateField(auto_now_add=True)
+    post_data = models.DateTimeField(auto_now_add=True)
     header_post = models.CharField(max_length=255)
     text_post = models.TextField()
     rating_post = models.IntegerField(default=0)
