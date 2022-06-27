@@ -1,8 +1,10 @@
 from django.contrib.admin import action
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models import Count
+from django.db.models.signals import post_save, m2m_changed, pre_save
 from django.dispatch import receiver
 from django.core.mail import mail_admins, EmailMultiAlternatives
 from django.template.loader import render_to_string
+import datetime
 
 
 from .models import Post, Category
@@ -27,11 +29,10 @@ def notify_subscribers(instance, action, *args, **kwargs):
         msg.send()
 
 
-
-
-
-
-
-
+@receiver(pre_save, sender=Post)
+def limitation_post(sender, instance, **kwargs):
+    quantity_posts = sender.objects.filter(post_author=instance.post_author, post_data=instance.post_data)
+    posts = Count('quantity_posts')
+    return instance.posts
 
 

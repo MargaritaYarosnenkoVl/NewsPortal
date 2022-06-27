@@ -6,11 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.core.mail import mail_admins
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from .signals import limitation_post
 
 
 class NewsList(ListView):
@@ -69,12 +65,15 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
                          header_post=request.POST.get('header_post'),
                          text_post=request.POST.get('text_post'))
 
-        post_mail.save()
+        if limitation_post < 4:
+            post_mail.save()
 
-        post_mail.post_category.add(request.POST.get('post_category'))
+            post_mail.post_category.add(request.POST.get('post_category'))
+
+            return redirect('/')
 
 
-        return redirect('/')
+
 
     def form_valid(self, form):
         user = self.request.user
