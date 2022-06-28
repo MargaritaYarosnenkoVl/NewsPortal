@@ -5,8 +5,6 @@ from django.dispatch import receiver
 from django.core.mail import mail_admins, EmailMultiAlternatives
 from django.template.loader import render_to_string
 import datetime
-
-
 from .models import Post, Category
 
 
@@ -19,11 +17,11 @@ def notify_subscribers(instance, action, *args, **kwargs):
                     f'{instance.header_post}',
             body=instance.text_post[:50] + '...',
             from_email='yamargoshka@inbox.ru',
-            to={
+            to=[
                 user.email
                 for category in instance.post_category.all()
                 for user in category.subscribers.all()
-            })
+            ])
         msg.attach_alternative(html_content, "text/html")
 
         msg.send()
@@ -31,8 +29,17 @@ def notify_subscribers(instance, action, *args, **kwargs):
 
 @receiver(pre_save, sender=Post)
 def limitation_post(sender, instance, **kwargs):
-    quantity_posts = sender.objects.filter(post_author=instance.post_author, post_data=instance.post_data)
-    posts = Count('quantity_posts')
-    return instance.posts
+    quantity_posts = sender.objects.filter(post_author=instance.post_author, post_data__date=datetime.datetime.now().date())
+    print('мой вывод', len(quantity_posts))
+    return len(quantity_posts)
+
+
+
+
+
+
+
+
+
 
 
