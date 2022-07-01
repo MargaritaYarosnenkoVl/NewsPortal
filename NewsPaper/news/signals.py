@@ -13,7 +13,7 @@ def notify_subscribers(instance, action, *args, **kwargs):
     if action == 'post_add':
         html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
         msg = EmailMultiAlternatives(
-            subject=f'"Здравствуй, {instance.post_author}. Новая статья в твоём любимом разделе!"'
+            subject=f'"Здравствуй, {instance.post_author.author_user}. Новая статья в твоём любимом разделе!"'
                     f'{instance.header_post}',
             body=instance.text_post[:50] + '...',
             from_email='yamargoshka@inbox.ru',

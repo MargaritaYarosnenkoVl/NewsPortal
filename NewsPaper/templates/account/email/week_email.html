@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{{ user.username }}, смотрите новые посты категории <b>"{{category}}"</b> за неделю!
+        <br>
+<br>
+    {% for post in posts %}
+    {% if category in post.post_category.all%}
+<br>
+    <a href="http://127.0.0.1:8000/news/{{ post.id }}">{{post.header_post}}</a>
+    <br>
+<br>
+    <i>{{post.post_text|truncatechars:50}}</i>
+        <hr>
+    <br>
+    {% endif %}
+    {% endfor %}
+
+
+</body>
+</html>
