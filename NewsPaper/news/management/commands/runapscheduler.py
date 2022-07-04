@@ -22,7 +22,7 @@ def my_job():
     posts = Post.objects.filter(post_data__range=(start_date, end_date))
     for category in Category.objects.all():
         html_content = render_to_string('account/email/week_email.html',
-                                        {'posts': posts, 'category': category}, )
+                                        {'posts': posts, 'category': category, 'user': Post.post_author, }, )
         msg = EmailMultiAlternatives(
             subject=f'"Еженедельная подписка"',
             body="Новости",

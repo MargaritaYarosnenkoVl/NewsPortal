@@ -1,4 +1,5 @@
 from django.contrib.admin import action
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models.signals import post_save, m2m_changed, pre_save
 from django.dispatch import receiver
@@ -11,6 +12,7 @@ from .models import Post, Category
 @receiver(m2m_changed, sender=Post.post_category.through)
 def notify_subscribers(instance, action, *args, **kwargs):
     if action == 'post_add':
+        user = User.objects.get(email=email)
         html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
         msg = EmailMultiAlternatives(
             subject=f'"Здравствуй, {instance.post_author}. Новая статья в твоём любимом разделе!"'
