@@ -28,8 +28,11 @@ class Category(models.Model):
 
     def get_subscribers_emails(self):
         result = set()
+
         for user in self.subscribers.all():
+
             result.add(user.email)
+
         return result
 
 

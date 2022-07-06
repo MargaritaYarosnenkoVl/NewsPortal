@@ -12,7 +12,6 @@ from .models import Post, Category
 @receiver(m2m_changed, sender=Post.post_category.through)
 def notify_subscribers(instance, action, *args, **kwargs):
     if action == 'post_add':
-        user = User.objects.get(email=email)
         html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
         msg = EmailMultiAlternatives(
             subject=f'"Здравствуй, {instance.post_author}. Новая статья в твоём любимом разделе!"'

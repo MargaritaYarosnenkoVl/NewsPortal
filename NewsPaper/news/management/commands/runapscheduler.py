@@ -1,5 +1,7 @@
 import datetime
 import logging
+
+from django.contrib.auth.models import User
 from django_apscheduler.models import DjangoJobExecution
 from news.models import Post, Category
 from django.conf import settings
@@ -15,14 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 def my_job():
-    time_delta = datetime.timedelta(minutes=1)
+    time_delta = datetime.timedelta(7)
     start_date = datetime.datetime.utcnow() - time_delta
     end_date = datetime.datetime.utcnow()
 
     posts = Post.objects.filter(post_data__range=(start_date, end_date))
+
     for category in Category.objects.all():
         html_content = render_to_string('account/email/week_email.html',
-                                        {'posts': posts, 'category': category, 'user': Post.post_author, }, )
+                                        {'posts': posts, 'category': category},)
         msg = EmailMultiAlternatives(
             subject=f'"Еженедельная подписка"',
             body="Новости",
@@ -30,6 +33,7 @@ def my_job():
             to=category.get_subscribers_emails())
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
 
 
 def delete_old_job_executions(max_age=604_800):
@@ -46,7 +50,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(minute="*/1"),
+            trigger=CronTrigger(day="*/7"),
             id="my_job",
             max_instances=1,
             replace_existing=True,
