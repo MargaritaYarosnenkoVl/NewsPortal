@@ -65,7 +65,7 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
                          header_post=request.POST.get('header_post'),
                          text_post=request.POST.get('text_post'))
 
-        if limitation_post(sender=Post, instance=post_mail, **kwargs) < 1000:
+        if limitation_post(sender=Post, instance=post_mail, **kwargs) < 3:
             post_mail.save()
             post_mail.post_category.add(*request.POST.getlist('post_category'))
 

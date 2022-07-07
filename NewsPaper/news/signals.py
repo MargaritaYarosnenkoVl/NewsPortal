@@ -12,20 +12,23 @@ from .models import Post, Category
 @receiver(m2m_changed, sender=Post.post_category.through)
 def notify_subscribers(instance, action, *args, **kwargs):
     if action == 'post_add':
-        html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
-        msg = EmailMultiAlternatives(
-            subject=f'"Здравствуй, {instance.post_author}. Новая статья в твоём любимом разделе!"'
-                    f'{instance.header_post}',
-            body=instance.text_post[:50] + '...',
-            from_email='yamargoshka@inbox.ru',
-            to=[
+        users_emails = [
                 user.email
                 for category in instance.post_category.all()
                 for user in category.subscribers.all()
-            ])
-        msg.attach_alternative(html_content, "text/html")
-
-        msg.send()
+            ]
+        for email in users_emails:
+            user = User.objects.get(email=email)
+            html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
+            msg = EmailMultiAlternatives(
+                subject=f'"Здравствуй, {user.username}. Новая статья в твоём любимом разделе!"'
+                        f'{instance.header_post}',
+                body=instance.text_post[:50] + '...',
+                from_email='yamargoshka@inbox.ru',
+                to=[email]
+                )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
 
 
 @receiver(pre_save, sender=Post)
