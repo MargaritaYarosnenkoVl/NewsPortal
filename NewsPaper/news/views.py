@@ -68,8 +68,6 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
         if limitation_post(sender=Post, instance=post_mail, **kwargs) < 3:
             post_mail.save()
             post_mail.post_category.add(*request.POST.getlist('post_category'))
-
-
         else:
             print('Нельзя создавать больше 3х статей за день')
 
