@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:${POSTGRES_VERSION}
+    environment:
+      POSTGRES_DB:
+      POSTGRES_USER:
+      POSTGRES_PASWORD:
+    restart: unless-stopped
+    networks:
+      skill-backend:
+  web:
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+    ports:
+      - "${DOCKER_EXPOSE_PORT:8000}${DJANGO_PORT:-8000}"
+    restart: unless-stopped
+    command: "python manage.py runserver 0.0.0.0:{DJANGO_PORT:-8000}"
+    networks:
+      skill-backend:
+  redis:
+    image: redis:5.0
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./docker/redis-data:/data
+    ports:
+      - "${REDIS_PORT}"
+    networks:
+      skill-backend:
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    image: celery:3.1
+    command: "celery -A send worker -l info"
+    depends_on:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://${REDIS_HOST}${REDIS_PORT}/
+    restart: always
+    networks:
+      skill-backend:
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    image: celery:3.1
+    command: "celery -A seed beat -l info"
+    depends_on:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://${REDIS_HOST}${REDIS_PORT}/
+      CELERY_RESULT_BACKEND: redis://${REDIS_HOST}${REDIS_PORT}/
+    restart: always
+    networks:
+      skill-backend:
+
+networks:
+      skill-backend:
