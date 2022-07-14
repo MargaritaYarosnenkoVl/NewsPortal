@@ -178,3 +178,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@inbox.ru"
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
+CELERY_BROKER_URL = 'redis://:TRJMrGjVOxs4nxTH7Qk7QqVDZeWE7gh9@redis-12737.c282.east-us-mz.azure.cloud.redislabs.com:12737/0'
+CELERY_RESULT_BACKEND = 'redis://:TRJMrGjVOxs4nxTH7Qk7QqVDZeWE7gh9@redis-12737.c282.east-us-mz.azure.cloud.redislabs.com:12737/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

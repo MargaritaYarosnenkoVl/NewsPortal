@@ -7,6 +7,9 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from .signals import limitation_post
+from django.http import HttpResponse
+from django.views import View
+from .tasks import hello, printer
 
 
 class NewsList(ListView):
@@ -130,3 +133,9 @@ def unsubscribe(request, **kwargs):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
+
+class IndexView(View):
+    def get(self, request):
+        printer.delay(10)
+        hello.delay()
+        return HttpResponse('Hello!')

@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import NewsList, NewsDetail, Search, NewsUpgrade, NewsDelete, NewsAdd, upgrade_me, subscribe, unsubscribe
+from .views import NewsList, NewsDetail, Search, NewsUpgrade, NewsDelete, NewsAdd, upgrade_me, subscribe, unsubscribe, \
+    IndexView
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path('upgrade/', upgrade_me, name='upgrade'),
     path('subscribe/<int:pk>', subscribe, name='subscribe'),
     path('unsubscribe/<int:pk>', unsubscribe, name='unsubscribe'),
+    path('example/', IndexView.as_view()),
 ]
