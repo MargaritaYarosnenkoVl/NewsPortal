@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+'''from django.contrib.auth.models import User
 from django.db.models.signals import m2m_changed, pre_save
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
@@ -33,7 +33,7 @@ def notify_subscribers(instance, action, *args, **kwargs):
 def limitation_post(sender, instance, **kwargs):
     quantity_posts = sender.objects.filter(post_author=instance.post_author, post_data__date=datetime.datetime.now().date())
     print('количество статей', len(quantity_posts))
-    return len(quantity_posts)
+    return len(quantity_posts)'''
 
 
 

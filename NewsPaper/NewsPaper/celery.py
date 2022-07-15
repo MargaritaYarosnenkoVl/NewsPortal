@@ -11,8 +11,8 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'week_mails': {
-        'task': 'NewsPaper.tasks.celery_week_mails',
-        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
+        'task': 'news.tasks.celery_week_mails',
+        'schedule': crontab(minute='*/1'),
         'args': (),
     },
 }
