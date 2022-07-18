@@ -9,11 +9,11 @@ from news.models import Post, Category
 
 
 @shared_task
-def celery_notify_subscribers(subject, from_email, html_content):
+def celery_notify_subscribers(subject, from_email, email, html_content):
     msg = EmailMultiAlternatives(
                 subject=subject,
                 from_email=from_email,
-                to=['email']
+                to=[email]
             )
 
     msg.attach_alternative(html_content, "text/html")
@@ -34,7 +34,7 @@ def celery_week_mails():
         msg = EmailMultiAlternatives(
             subject=f'"Еженедельная подписка (celery)"',
             body="Новости",
-            from_email='yamargoshka@inbox.ru',
+            from_email='yamargoshka15@gmail.com',
             to=category.get_subscribers_emails())
         msg.attach_alternative(html_content, "text/html")
         msg.send()

@@ -162,17 +162,17 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
-EMAIL_HOST = 'smtp.inbox.ru'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'yamargoshka'
-EMAIL_HOST_PASSWORD = 'O2KTVWMKocGPNCo9nc55'
+EMAIL_HOST_USER = 'yamargoshka15'
+EMAIL_HOST_PASSWORD = 'bkrjonloatgcckkb'
 EMAIL_USE_SSL = True
-EMAIL_FROM = 'yamargoshka@inbox.ru'
+EMAIL_FROM = EMAIL_HOST_USER +'@gmail.com'
 
 ADMINS = [
     ('Margarita', 'yamargoshka@inbox.ru'),
 ]
-SERVER_EMAIL = 'yamargoshka@inbox.ru'
+SERVER_EMAIL = 'yamargoshka15@gmail.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@inbox.ru"
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
