@@ -22,7 +22,7 @@ def celery_notify_subscribers(subject, from_email, email, html_content):
 
 @shared_task
 def celery_week_mails():
-    time_delta = datetime.timedelta(minutes=1)
+    time_delta = datetime.timedelta(7)
     start_date = datetime.datetime.utcnow() - time_delta
     end_date = datetime.datetime.utcnow()
 

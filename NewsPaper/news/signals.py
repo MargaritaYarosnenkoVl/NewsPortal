@@ -21,8 +21,8 @@ def notify_subscribers(instance, action, *args, **kwargs):
             html_content = render_to_string('mail_created.html', {'post_mail': instance}, )
 
             subject=f'"Здравствуй, {user.username}. Новая статья в твоём любимом разделе(celery)!"'\
-                    f'{instance.header_post}',
-            from_email='yamargoshka15@gmail.com',
+                    f'{instance.header_post}'
+            from_email='yamargoshka15@gmail.com'
             celery_notify_subscribers.delay(subject, from_email, email, html_content)
 
 
