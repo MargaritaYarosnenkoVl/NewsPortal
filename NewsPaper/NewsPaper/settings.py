@@ -162,12 +162,12 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.inbox.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'yamargoshka15'
-EMAIL_HOST_PASSWORD = 'bkrjonloatgcckkb'
+EMAIL_HOST_USER = 'yamargoshka'
+EMAIL_HOST_PASSWORD = 'O2KTVWMKocGPNCo9nc55'
 EMAIL_USE_SSL = True
-EMAIL_FROM = EMAIL_HOST_USER +'@gmail.com'
+EMAIL_FROM = 'yamargoshka@inbox.ru'
 
 ADMINS = [
     ('Margarita', 'yamargoshka@inbox.ru'),

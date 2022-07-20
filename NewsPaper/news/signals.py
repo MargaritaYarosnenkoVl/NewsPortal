@@ -22,7 +22,7 @@ def notify_subscribers(instance, action, *args, **kwargs):
 
             subject=f'"Здравствуй, {user.username}. Новая статья в твоём любимом разделе(celery)!"'\
                     f'{instance.header_post}'
-            from_email='yamargoshka15@gmail.com'
+            from_email='yamargoshka@inbox.ru'
             celery_notify_subscribers.delay(subject, from_email, email, html_content)
 
 
