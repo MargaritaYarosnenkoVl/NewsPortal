@@ -3,9 +3,12 @@
 
 {% load censor %}
 
-{% block title %}
-News
-{% endblock title %}
+{% load cache %}
+    {% cache 300 title %}
+        {% block title %}
+        News
+        {% endblock title %}
+    {% endcache %}
 
 
 {% block content %}

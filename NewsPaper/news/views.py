@@ -1,14 +1,13 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Post, Author, Category
+from .models import Post, Author
 from .filters import SearchFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from .signals import limitation_post
-from django.http import HttpResponse
-from django.views import View
+from django.core.cache import cache
 
 
 
@@ -55,6 +54,15 @@ class NewsDetail(DetailView):
         context['subscribers'] = is_subscriber
         return context
 
+    def get_object(self, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
+
 
 class NewsAdd(PermissionRequiredMixin, CreateView):
     model = Post
@@ -68,7 +76,7 @@ class NewsAdd(PermissionRequiredMixin, CreateView):
                          header_post=request.POST.get('header_post'),
                          text_post=request.POST.get('text_post'))
 
-        if limitation_post(sender=Post, instance=post_mail, **kwargs) < 10000:
+        if limitation_post(sender=Post, instance=post_mail, **kwargs) < 10000000:
             post_mail.save()
             post_mail.post_category.add(*request.POST.getlist('post_category'))
         else:

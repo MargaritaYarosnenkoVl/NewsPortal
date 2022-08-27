@@ -1,10 +1,11 @@
 {% extends 'flatpages/default.html' %}
 {% load censor %}
-
-
-{% block title %}
-News
-{% endblock title %}
+{% load cache %}
+    {% cache 60 title %}
+        {% block title %}
+        News
+        {% endblock title %}
+    {% endcache %}
 
 {% block content %}
 <h1>Все новости: {{ news|length }}</h1>
