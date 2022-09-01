@@ -22,15 +22,15 @@ def notify_subscribers(instance, action, *args, **kwargs):
 
             subject=f'"Здравствуй, {user.username}. Новая статья в твоём любимом разделе(celery)!"'\
                     f'{instance.header_post}'
-            from_email='yamargoshka@inbox.ru'
+            from_email = 'yamargoshka15@gmail.com'
             celery_notify_subscribers.delay(subject, from_email, email, html_content)
 
 
-@receiver(pre_save, sender=Post)
+'''@receiver(pre_save, sender=Post)
 def limitation_post(sender, instance, **kwargs):
     quantity_posts = sender.objects.filter(post_author=instance.post_author, post_data__date=datetime.datetime.now().date())
     print('количество статей', len(quantity_posts))
-    return len(quantity_posts)
+    return len(quantity_posts)'''
 
 
 

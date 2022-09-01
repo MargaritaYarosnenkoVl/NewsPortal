@@ -34,7 +34,7 @@ def celery_week_mails():
         msg = EmailMultiAlternatives(
             subject=f'"Еженедельная подписка (celery)"',
             body="Новости",
-            from_email='yamargoshka@inbox.ru',
+            from_email='yamargoshka15@gmail.com',
             to=category.get_subscribers_emails())
         msg.attach_alternative(html_content, "text/html")
         msg.send()

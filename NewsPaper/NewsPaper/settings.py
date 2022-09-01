@@ -29,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -162,19 +162,19 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
-EMAIL_HOST = 'smtp.inbox.ru'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'yamargoshka'
-EMAIL_HOST_PASSWORD = '7Dm5ssuVvCK2kpvBXfpG'
+EMAIL_HOST_USER = 'yamargoshka15'
+EMAIL_HOST_PASSWORD = 'ojnsnaorzzdnczfg'
 EMAIL_USE_SSL = True
-EMAIL_FROM = 'yamargoshka@inbox.ru'
+EMAIL_FROM = 'yamargoshka15@gmail.com'
 
 ADMINS = [
-    ('Margarita', 'yamargoshka@inbox.ru'),
+    ('Margarita', '_lampochka@mail.ru'),
 ]
 
-SERVER_EMAIL = 'yamargoshka@inbox.ru'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@inbox.ru"
+SERVER_EMAIL = 'yamargoshka15@gmail.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + "@gmail.com"
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
@@ -217,7 +217,7 @@ LOGGING = {
         'security_log': {
             'format': '%(asctime)s %(levelname)s  %(module)s %(message)s'
         },
-        'mail_admins': {
+        'mail_admin': {
             'format': '%(asctime)s %(levelname)s  %(message)s %(pathname)s'
         },
     },
@@ -270,7 +270,7 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'formatter': 'mail_admins',
+            'formatter': 'mail_admin',
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
